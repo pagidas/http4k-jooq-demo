@@ -1,0 +1,89 @@
+plugins {
+    id 'application'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
+    id 'nu.studer.jooq' version '3.0.3'
+    id 'java'
+    id "org.flywaydb.flyway" version "6.3.2"
+}
+
+apply from: rootProject.file("versions.gradle")
+
+mainClassName = 'me.kostasakrivos.demo.http4k.ItemAppKt'
+
+group 'me.kostasakrivos.demo.http4k'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    compile kotlin
+    compile http4kCore
+    compile http4kJsonAndContractRoute
+    compile http4kOAuth
+    compile http4kServer
+    compile http4kClient
+    compile http4kHamkrest
+    compile jooq
+    compile typesafeConfig
+    compile database
+    compile hikari
+    compile slf4jLogging
+
+    jooqRuntime database
+
+    testCompile jupiter
+    testRuntimeOnly jupiterEngine
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+flyway {
+    driver = 'com.mysql.cj.jdbc.Driver'
+    url = 'jdbc:mysql://localhost:3306/items_app'
+    user = 'root'
+    password = ''
+}
+
+jooq {
+    version = jooq_version
+    itemsApp(sourceSets.main, jooqConfig())
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': 'me.kostasakrivos.demo.http4k.ItemAppKt')
+    }
+}
+
+def jooqConfig() {
+    return {
+        logging = 'DEBUG'
+        jdbc {
+            driver = 'com.mysql.cj.jdbc.Driver'
+            url = 'jdbc:mysql://localhost:3306'
+            user = 'root'
+            password = ''
+            schema = 'items_app'
+        }
+        generator {
+            database {
+                name = 'org.jooq.meta.mysql.MySQLDatabase'
+                inputSchema = 'items_app'
+            }
+        }
+    }
+}
+
+

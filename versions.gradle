@@ -1,0 +1,74 @@
+ext {
+    // Dependencies versions
+    kotlin_version = '1.3.50'
+    http4k_version = '3.233.0'
+    http4k_hamkrest_version = '3.230.0'
+    hamkrest_version = '1.7.0.0'
+    junit_version = '5.5.1'
+    typesafe_version = '1.4.0'
+    jooq_version = '3.12.3'
+    mysql_version = '8.0.18'
+    hikari_version = '3.4.1'
+    slf4j_version = '2.0.0-alpha1'
+
+    // Dependencies
+    kotlin = [
+            "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    ]
+
+    database = [
+            "mysql:mysql-connector-java:$mysql_version"
+    ]
+
+    http4kServer = [
+            "org.http4k:http4k-server-jetty:$http4k_version"
+    ]
+
+    http4kClient = [
+            "org.http4k:http4k-client-apache:$http4k_version"
+    ]
+
+    http4kCore = [
+            "org.http4k:http4k-core:$http4k_version"
+    ]
+
+    http4kOAuth = [
+            "org.http4k:http4k-security-oauth:$http4k_version"
+    ]
+
+    http4kJsonAndContractRoute = [
+            "org.http4k:http4k-format-jackson:$http4k_version",
+            "org.http4k:http4k-contract:$http4k_version"
+    ]
+
+    http4kHamkrest = [
+            "org.http4k:http4k-testing-hamkrest:$http4k_hamkrest_version"
+    ]
+
+    jooq = [
+            "org.jooq:jooq:$jooq_version",
+            "org.jooq:jooq-meta:$jooq_version",
+            "org.jooq:jooq-codegen:$jooq_version"
+    ]
+
+    hikari = [
+            "com.zaxxer:HikariCP:$hikari_version"
+    ]
+
+    typesafeConfig = [
+            "com.typesafe:config:$typesafe_version"
+    ]
+
+    jupiter = [
+            "org.junit.jupiter:junit-jupiter-api:$junit_version"
+    ]
+
+    jupiterEngine = [
+            "org.junit.jupiter:junit-jupiter-engine:$junit_version"
+    ]
+
+    slf4jLogging = [
+            "org.slf4j:slf4j-api:$slf4j_version",
+            "org.slf4j:slf4j-simple:$slf4j_version"
+    ]
+}
