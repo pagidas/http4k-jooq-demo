@@ -3,7 +3,7 @@ package me.kostasakrivos.demo.http4k.endpoints
 import me.kostasakrivos.demo.http4k.GetItemResponse
 import me.kostasakrivos.demo.http4k.ItemSpecs
 import me.kostasakrivos.demo.http4k.autoLens
-import me.kostasakrivos.demo.http4k.domain.ItemId
+import me.kostasakrivos.demo.http4k.ItemId
 import me.kostasakrivos.demo.http4k.security.Security
 import me.kostasakrivos.demo.http4k.service.ItemService
 import org.http4k.contract.ContractRoute

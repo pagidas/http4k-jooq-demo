@@ -1,8 +1,8 @@
 package me.kostasakrivos.demo.http4k.repo
 
-import me.kostasakrivos.demo.http4k.domain.Item
-import me.kostasakrivos.demo.http4k.domain.ItemId
-import me.kostasakrivos.demo.http4k.domain.ItemName
+import me.kostasakrivos.demo.http4k.Item
+import me.kostasakrivos.demo.http4k.ItemId
+import me.kostasakrivos.demo.http4k.ItemName
 import org.jooq.DSLContext
 import org.jooq.generated.Tables.ITEMS
 import org.jooq.generated.tables.records.ItemsRecord
@@ -41,6 +41,9 @@ class ItemRepositoryImpl(private val dslContext: DSLContext): ItemRepository {
             .fetchOne()?.toItem()
 
     private fun Item.toItemsRecord() = ItemsRecord(this.id?.value, this.name.value)
-    private fun ItemsRecord.toItem() = Item(ItemId(this.id), ItemName(this.name))
+    private fun ItemsRecord.toItem() = Item(
+        ItemId(this.id),
+        ItemName(this.name)
+    )
     private fun List<ItemsRecord>.toItems() = this.map { it.toItem() }
 }

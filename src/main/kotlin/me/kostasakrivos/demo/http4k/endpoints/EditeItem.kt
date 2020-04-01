@@ -4,7 +4,7 @@ import me.kostasakrivos.demo.http4k.EditItemRequest
 import me.kostasakrivos.demo.http4k.EditItemResponse
 import me.kostasakrivos.demo.http4k.ItemSpecs
 import me.kostasakrivos.demo.http4k.autoLens
-import me.kostasakrivos.demo.http4k.domain.Item
+import me.kostasakrivos.demo.http4k.Item
 import me.kostasakrivos.demo.http4k.security.Security
 import me.kostasakrivos.demo.http4k.service.ItemService
 import org.http4k.contract.ContractRoute

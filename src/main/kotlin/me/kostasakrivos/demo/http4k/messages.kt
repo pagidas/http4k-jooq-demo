@@ -1,9 +1,6 @@
 package me.kostasakrivos.demo.http4k
 
 import com.fasterxml.jackson.databind.JsonNode
-import me.kostasakrivos.demo.http4k.domain.Item
-import me.kostasakrivos.demo.http4k.domain.ItemId
-import me.kostasakrivos.demo.http4k.domain.ItemName
 import org.http4k.core.Body
 import org.http4k.format.Jackson
 import org.http4k.format.Jackson.auto

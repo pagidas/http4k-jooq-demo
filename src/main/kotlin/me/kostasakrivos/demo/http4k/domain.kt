@@ -1,4 +1,4 @@
-package me.kostasakrivos.demo.http4k.domain
+package me.kostasakrivos.demo.http4k
 
 data class ItemName(val value: String)
 

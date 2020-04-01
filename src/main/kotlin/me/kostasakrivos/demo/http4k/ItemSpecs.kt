@@ -4,10 +4,6 @@ import me.kostasakrivos.demo.http4k.ExampleItemsRequestResponses.exampleAllItems
 import me.kostasakrivos.demo.http4k.ExampleItemsRequestResponses.exampleGetItemResponse
 import me.kostasakrivos.demo.http4k.ExampleItemsRequestResponses.exampleNewItemRequest
 import me.kostasakrivos.demo.http4k.ExampleItemsRequestResponses.exampleNewItemResponse
-import me.kostasakrivos.demo.http4k.domain.Item
-import me.kostasakrivos.demo.http4k.domain.ItemId
-import me.kostasakrivos.demo.http4k.domain.ItemName
-import me.kostasakrivos.demo.http4k.domain.asA
 import org.http4k.contract.RouteMetaDsl
 import org.http4k.contract.div
 import org.http4k.contract.meta

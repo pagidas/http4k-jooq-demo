@@ -11,7 +11,6 @@ import org.http4k.contract.openapi.v3.OpenApi3
 import org.http4k.core.then
 import org.http4k.filter.DebuggingFilters
 import org.http4k.filter.ServerFilters
-import org.http4k.format.Jackson
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.bind
 import org.http4k.routing.routes

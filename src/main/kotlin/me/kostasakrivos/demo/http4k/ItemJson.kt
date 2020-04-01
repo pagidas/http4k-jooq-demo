@@ -3,14 +3,11 @@ package me.kostasakrivos.demo.http4k
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import me.kostasakrivos.demo.http4k.domain.ItemId
-import me.kostasakrivos.demo.http4k.domain.ItemName
 import org.http4k.format.AutoMappingConfiguration
 import org.http4k.format.ConfigurableJackson
 import org.http4k.format.asConfigurable
 import org.http4k.format.withStandardMappings
 import org.http4k.lens.BiDiMapping
-import org.http4k.lens.StringBiDiMappings
 
 object ItemJson: ConfigurableJackson(KotlinModule()
     .asConfigurable()
