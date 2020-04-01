@@ -44,7 +44,7 @@ object GetItemResponse {
 }
 
 private fun Item.toJsonItem() = Jackson {
-    obj("id" to id!!.value.asJsonValue(),
+    obj("id" to id?.value.asJsonValue(),
         "name" to name.value.asJsonValue()) }
 
 private fun List<Item>.toJsonItems(): JsonNode {
