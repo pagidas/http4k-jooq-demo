@@ -19,10 +19,10 @@ object ItemRoutes {
     operator fun invoke(itemService: ItemService): RoutingHttpHandler {
         val contractRoutes =
             listOf(
-                NewItem(itemService),
-                AllItems(itemService),
-                GetItem(itemService),
-                EditItem(itemService)
+                NewItem(itemService).contractRoute,
+                AllItems(itemService).contractRouteFor,
+                GetItem(itemService).contractRouteFor,
+                EditItem(itemService).contractRouteFor
             )
 
         val contract = contract {
