@@ -19,16 +19,16 @@ object ItemRoutes {
     operator fun invoke(itemService: ItemService): RoutingHttpHandler {
         val contractRoutes =
             listOf(
-                NewItem(itemService).contractRoute,
-                AllItems(itemService).contractRouteFor,
-                GetItem(itemService).contractRouteFor,
-                EditItem(itemService).contractRouteFor
+                NewItem(itemService),
+                AllItems(itemService),
+                GetItem(itemService),
+                EditItem(itemService)
             )
 
         val contract = contract {
             renderer = OpenApi3(ApiInfo("Items API", "v1.0"), ItemJson)
             descriptionPath = "/swagger.json"
-            routes += contractRoutes
+            routes += contractRoutes.map { it.contractRoute }
         }
 
         return ServerFilters.CatchLensFailure

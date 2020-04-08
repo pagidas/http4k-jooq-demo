@@ -7,6 +7,7 @@ import me.kostasakrivos.demo.http4k.NewItemRequest
 import me.kostasakrivos.demo.http4k.NewItemResponse
 import me.kostasakrivos.demo.http4k.asA
 import me.kostasakrivos.demo.http4k.autoLens
+import me.kostasakrivos.demo.http4k.common.Endpoint
 import me.kostasakrivos.demo.http4k.security.Security
 import me.kostasakrivos.demo.http4k.service.ItemService
 import org.http4k.contract.meta
@@ -17,14 +18,14 @@ import org.http4k.core.Response
 import org.http4k.core.Status.Companion.CREATED
 import org.http4k.core.with
 
-class NewItem(private val items: ItemService) {
+class NewItem(private val items: ItemService): Endpoint {
 
     private val exampleNewItemRequest = NewItemRequest("just-an-item".asA(::ItemName))
     private val exampleNewItemResponse = NewItemResponse(
         Item(5.asA(::ItemId), "the-newly-created-item".asA(::ItemName))
     )
 
-    private val spec =
+    override val spec =
         "/items" meta {
             summary = "Creates a new item."
             security = Security.basicAuth
@@ -32,7 +33,7 @@ class NewItem(private val items: ItemService) {
             returning(CREATED, autoLens to exampleNewItemResponse)
     }
 
-    val contractRoute = spec bindContract POST to handler()
+    override val contractRoute = spec bindContract POST to handler()
 
     private fun handler(): HttpHandler = { req: Request ->
         with(NewItemRequest.lens(req)) {

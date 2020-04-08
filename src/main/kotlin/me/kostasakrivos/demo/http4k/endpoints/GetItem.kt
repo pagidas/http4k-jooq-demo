@@ -6,6 +6,7 @@ import me.kostasakrivos.demo.http4k.ItemId
 import me.kostasakrivos.demo.http4k.ItemName
 import me.kostasakrivos.demo.http4k.asA
 import me.kostasakrivos.demo.http4k.autoLens
+import me.kostasakrivos.demo.http4k.common.Endpoint
 import me.kostasakrivos.demo.http4k.security.Security
 import me.kostasakrivos.demo.http4k.service.ItemService
 import org.http4k.contract.div
@@ -19,7 +20,7 @@ import org.http4k.core.with
 import org.http4k.lens.Path
 import org.http4k.lens.int
 
-class GetItem(private val items: ItemService) {
+class GetItem(private val items: ItemService): Endpoint {
 
     private val Path.itemId get() = Path.int().map(::ItemId, ItemId::value).of("itemId", "The ID of the Item.")
 
@@ -27,14 +28,14 @@ class GetItem(private val items: ItemService) {
 
     private val exampleGetItemResponse = GetItemResponse(tempItem1)
 
-    private val spec =
+    override val spec =
         "/items" / Path.itemId meta {
             summary = "Returns that item given the id."
             security = Security.basicAuth
             returning(OK, autoLens to exampleGetItemResponse)
         }
 
-    val contractRouteFor = spec bindContract GET to { itemId ->  handler(itemId) }
+    override val contractRoute = spec bindContract GET to { itemId ->  handler(itemId) }
 
     private fun handler(inputItemId: ItemId): HttpHandler = { _: Request ->
         items.getItem(inputItemId)?.let {

@@ -6,6 +6,7 @@ import me.kostasakrivos.demo.http4k.ItemId
 import me.kostasakrivos.demo.http4k.ItemName
 import me.kostasakrivos.demo.http4k.asA
 import me.kostasakrivos.demo.http4k.autoLens
+import me.kostasakrivos.demo.http4k.common.Endpoint
 import me.kostasakrivos.demo.http4k.security.Security
 import me.kostasakrivos.demo.http4k.service.ItemService
 import org.http4k.contract.meta
@@ -16,7 +17,7 @@ import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
 
-class AllItems(private val items: ItemService) {
+class AllItems(private val items: ItemService): Endpoint {
 
     private val tempItem1 = Item(1.asA(::ItemId), "maybe a keyboard?".asA(::ItemName))
     private val tempItem2 = Item(2.asA(::ItemId), "maybe a mouse?".asA(::ItemName))
@@ -24,14 +25,14 @@ class AllItems(private val items: ItemService) {
 
     val exampleAllItemsResponse = AllItemsResponse(listOf(tempItem1, tempItem2, tempItem3))
 
-    private val spec =
+    override val spec =
         "/items" meta {
             summary = "Returns all items."
             security = Security.basicAuth
             returning(OK, autoLens to exampleAllItemsResponse)
         }
 
-    val contractRouteFor = spec bindContract GET to handler()
+    override val contractRoute = spec bindContract GET to handler()
 
     private fun handler(): HttpHandler = { _: Request ->
         with(items.getAllItems()) {
