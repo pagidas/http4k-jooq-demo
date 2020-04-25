@@ -9,8 +9,8 @@ interface ItemApi {
     fun getAllItems(): List<Item>
     fun getItem(id: ItemId): Item?
     fun newItem(name: ItemName): Item
-    fun deleteItem()
-    fun editItem(item: Item): Item?
+    fun editItem(item: Item): Boolean?
+    fun removeItem(id: ItemId?): Boolean?
 }
 
 class ItemService(private val repo: ItemRepository): ItemApi {
@@ -22,9 +22,7 @@ class ItemService(private val repo: ItemRepository): ItemApi {
         Item(name = name)
     )
 
-    override fun deleteItem() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun editItem(item: Item) = repo.updateItem(item)
+
+    override fun removeItem(id: ItemId?) = repo.deleteItem(id)
 }

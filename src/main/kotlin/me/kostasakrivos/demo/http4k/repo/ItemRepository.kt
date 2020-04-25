@@ -11,7 +11,8 @@ interface ItemRepository {
     fun storeItem(item: Item): Item
     fun fetchAllItems(): List<Item>
     fun fetchItem(id: ItemId): Item?
-    fun updateItem(item: Item): Item?
+    fun updateItem(item: Item): Boolean?
+    fun deleteItem(id: ItemId?): Boolean?
 }
 
 class ItemRepositoryImpl(private val dslContext: DSLContext): ItemRepository {
@@ -34,11 +35,19 @@ class ItemRepositoryImpl(private val dslContext: DSLContext): ItemRepository {
             .fetchOne()?.toItem()
 
     override fun updateItem(item: Item) =
-        dslContext.update(ITEMS)
-            .set(item.toItemsRecord())
-            .where(ITEMS.ID.eq(item.id!!.value))
-            .returning()
-            .fetchOne()?.toItem()
+        item.id?.let { givenId ->
+            dslContext.update(ITEMS)
+                .set(item.toItemsRecord())
+                .where(ITEMS.ID.eq(givenId.value))
+                .execute() > 0
+        }
+
+    override fun deleteItem(id: ItemId?) =
+        id?. let { givenId ->
+            dslContext.deleteFrom(ITEMS)
+                .where(ITEMS.ID.eq(givenId.value))
+                .execute() > 0
+        }
 
     private fun Item.toItemsRecord() = ItemsRecord(this.id?.value, this.name.value)
     private fun ItemsRecord.toItem() = Item(

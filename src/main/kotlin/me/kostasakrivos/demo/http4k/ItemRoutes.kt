@@ -4,6 +4,7 @@ import me.kostasakrivos.demo.http4k.endpoints.AllItems
 import me.kostasakrivos.demo.http4k.endpoints.EditItem
 import me.kostasakrivos.demo.http4k.endpoints.GetItem
 import me.kostasakrivos.demo.http4k.endpoints.NewItem
+import me.kostasakrivos.demo.http4k.endpoints.RemoveItem
 import me.kostasakrivos.demo.http4k.service.ItemService
 import org.http4k.contract.contract
 import org.http4k.contract.openapi.ApiInfo
@@ -22,7 +23,8 @@ object ItemRoutes {
                 NewItem(itemService),
                 AllItems(itemService),
                 GetItem(itemService),
-                EditItem(itemService)
+                EditItem(itemService),
+                RemoveItem(itemService)
             )
 
         val contract = contract {
