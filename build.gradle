@@ -4,6 +4,7 @@ plugins {
     id 'nu.studer.jooq' version '3.0.3'
     id 'java'
     id "org.flywaydb.flyway" version "6.3.2"
+    id "com.github.johnrengelman.shadow" version "5.2.0"
 }
 
 apply from: rootProject.file("versions.gradle")
@@ -64,6 +65,10 @@ jooq {
 jar {
     manifest {
         attributes('Main-Class': 'me.kostasakrivos.demo.http4k.ItemAppKt')
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
