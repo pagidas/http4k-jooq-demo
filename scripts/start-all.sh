@@ -12,7 +12,7 @@ start_mysql() {
   fi
 }
 
-migrations() {
+run_migrations() {
   ./gradlew flywayMigrate -i
 }
 
@@ -24,7 +24,7 @@ start_app() {
 # --Main Script--
 echo "MySQL script is running..."
 start_mysql
-echo "Gradle is running db migrations..."
-migrations
+echo "Gradle is running flyway db migrations..."
+run_migrations
 echo "Gradle is running the app..."
 start_app

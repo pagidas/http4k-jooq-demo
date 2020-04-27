@@ -21,6 +21,7 @@ fun main() {
     val service = ItemService(itemRepository)
 
     with(ItemRoutes(service)){
+        println(server.port)
         asServer(server.port.let(::Jetty)).start()
     }
 }

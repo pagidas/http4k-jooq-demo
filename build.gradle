@@ -4,7 +4,8 @@ plugins {
     id 'nu.studer.jooq' version '3.0.3'
     id 'java'
     id "org.flywaydb.flyway" version "6.3.2"
-    id "com.github.johnrengelman.shadow" version "5.2.0"
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.palantir.docker' version '0.22.2'
 }
 
 apply from: rootProject.file("versions.gradle")
@@ -43,11 +44,17 @@ dependencies {
     testRuntimeOnly jupiterEngine
 }
 
+docker {
+    name "${project.name}:${project.version}"
+    files "$buildDir/libs/${project.name}-${project.version}-all.jar"
+    buildArgs([JAR_FILE: "${project.name}-${project.version}-all.jar"])
+}
+
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 
 flyway {
@@ -62,14 +69,8 @@ jooq {
     itemsApp(sourceSets.main, jooqConfig())
 }
 
-jar {
-    manifest {
-        attributes('Main-Class': 'me.kostasakrivos.demo.http4k.ItemAppKt')
-    }
-
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    }
+shadowJar {
+    mergeServiceFiles()
 }
 
 def jooqConfig() {
