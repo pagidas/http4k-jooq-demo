@@ -1,7 +1,6 @@
 package me.kostasakrivos.demo.http4k
 
 import me.kostasakrivos.demo.http4k.config.ConfigReader
-import me.kostasakrivos.demo.http4k.config.ConfigReader.server
 import me.kostasakrivos.demo.http4k.db.DataSourceWrapper
 import me.kostasakrivos.demo.http4k.db.Database
 import me.kostasakrivos.demo.http4k.repo.ItemRepositoryImpl
@@ -14,14 +13,14 @@ fun main() {
     val dataSource = DataSourceWrapper(
         driverClassName = ConfigReader.db.driver,
         jdbcUrl = ConfigReader.jdbcUrl,
-        maximumPoolSize = ConfigReader.db.poolSize,
-        user = ConfigReader.db.user)
+        username = ConfigReader.db.username,
+        password = ConfigReader.db.password
+    )
     val database = Database(dataSource, SQLDialect.MYSQL)
     val itemRepository = ItemRepositoryImpl(database)
     val service = ItemService(itemRepository)
 
     with(ItemRoutes(service)){
-        println(server.port)
-        asServer(server.port.let(::Jetty)).start()
+        asServer(ConfigReader.server.port.let(::Jetty)).start()
     }
 }

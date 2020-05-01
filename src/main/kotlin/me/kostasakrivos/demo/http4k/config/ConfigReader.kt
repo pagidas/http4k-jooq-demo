@@ -3,8 +3,16 @@ package me.kostasakrivos.demo.http4k.config
 import com.typesafe.config.ConfigFactory
 import org.http4k.core.Credentials
 
+data class DbConfig(val driver: String,
+                    val url: String,
+                    val host: String,
+                    val port: Int,
+                    val poolSize: Int,
+                    val username: String,
+                    val password: String,
+                    val schema: String)
+
 data class ServerConfig(val host: String, val port: Int)
-data class DbConfig(val driver: String, val url: String, val host: String, val port: Int, val poolSize: Int, val user: String, val schema: String)
 data class BasicAuthSecurityConfig(val realm: String, val credentials: Credentials)
 
 object ConfigReader {
@@ -24,7 +32,8 @@ object ConfigReader {
         host = config.getString("db.host"),
         port = config.getInt("db.port"),
         poolSize = config.getInt("db.poolSize"),
-        user = config.getString("db.user"),
+        username = config.getString("db.username"),
+        password = config.getString("db.password"),
         schema = config.getString("db.schema")
     )
 

@@ -60,7 +60,8 @@ ext {
     ]
 
     jupiter = [
-            "org.junit.jupiter:junit-jupiter-api:$junit_version"
+            "org.junit.jupiter:junit-jupiter-api:$junit_version",
+            "org.junit.jupiter:junit-jupiter-params:$junit_version"
     ]
 
     jupiterEngine = [

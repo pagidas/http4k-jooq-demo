@@ -17,15 +17,17 @@ object Database {
 class DataSourceWrapper(
     driverClassName: String? = null,
     jdbcUrl: String? = null,
-    maximumPoolSize: Int? = null,
-    isAutoCommit: Boolean? = true,
-    user: String? = null) : HikariDataSource(
+    maximumPoolSize: Int = ConfigReader.db.poolSize,
+    isAutoCommit: Boolean = true,
+    username: String? = null,
+    password: String?) : HikariDataSource(
 
     HikariConfig().apply {
         this.driverClassName = driverClassName
         this.jdbcUrl = jdbcUrl
-        this.maximumPoolSize = maximumPoolSize!!
-        this.isAutoCommit = isAutoCommit!!
-        this.username = user
+        this.maximumPoolSize = maximumPoolSize
+        this.isAutoCommit = isAutoCommit
+        this.username = username
+        this.password = password
         validate()
     })
