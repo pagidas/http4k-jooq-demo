@@ -59,9 +59,9 @@ compileTestKotlin {
 
 flyway {
     driver = 'com.mysql.cj.jdbc.Driver'
-    url = 'jdbc:mysql://localhost:3306/items_app'
-    user = 'root'
-    password = ''
+    url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: "localhost"}:3306"
+    user = System.env.DB_USERNAME ?: "root"
+    password = System.env.DB_PASSWORD ?: ""
 }
 
 jooq {
@@ -78,9 +78,9 @@ def jooqConfig() {
         logging = 'DEBUG'
         jdbc {
             driver = 'com.mysql.cj.jdbc.Driver'
-            url = 'jdbc:mysql://localhost:3306'
-            user = 'root'
-            password = ''
+            url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: "localhost"}:3306"
+            user = System.env.DB_USERNAME ?: "root"
+            password = System.env.DB_PASSWORD ?: ""
             schema = 'items_app'
         }
         generator {
