@@ -10,6 +10,7 @@ ext {
     mysql_version = '8.0.18'
     hikari_version = '3.4.1'
     slf4j_version = '2.0.0-alpha1'
+    flyway_version = '6.4.1'
 
     // Dependencies
     kotlin = [
@@ -71,5 +72,9 @@ ext {
     slf4jLogging = [
             "org.slf4j:slf4j-api:$slf4j_version",
             "org.slf4j:slf4j-simple:$slf4j_version"
+    ]
+    
+    flyway = [
+            "org.flywaydb:flyway-core:$flyway_version"
     ]
 }

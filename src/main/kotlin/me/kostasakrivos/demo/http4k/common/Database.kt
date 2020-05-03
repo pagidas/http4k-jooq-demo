@@ -1,16 +1,22 @@
-package me.kostasakrivos.demo.http4k.db
+package me.kostasakrivos.demo.http4k.common
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import me.kostasakrivos.demo.http4k.config.ConfigReader
+import org.flywaydb.core.Flyway
 import org.jooq.DSLContext
 import org.jooq.SQLDialect
 import org.jooq.impl.DSL
 import javax.sql.DataSource
 
-object Database {
-    operator fun invoke(dataSource: DataSource, sqlDialect: SQLDialect): DSLContext {
-        return DSL.using(dataSource, sqlDialect)
+interface Database {
+    val dataSource: DataSource
+    val sqlDialect: SQLDialect
+        get() = SQLDialect.MYSQL
+
+    fun dslContext(): DSLContext = DSL.using(dataSource, sqlDialect)
+    fun runMigrations() = with(Flyway.configure().dataSource(dataSource).load()) {
+        migrate()
     }
 }
 
