@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  db:
+    image: "mysql:8.0.18"
+    container_name: items_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+  crud-service:
+    depends_on:
+      - db
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    image: "http4k-jooq-demo:1.0-SNAPSHOT"
+    container_name: items_app
+    restart: always
+    ports:
+      - 8080:8080
