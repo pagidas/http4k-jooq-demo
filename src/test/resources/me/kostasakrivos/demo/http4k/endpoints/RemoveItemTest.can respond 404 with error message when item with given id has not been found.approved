@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "Not Found",
+    "message": "Couldn't find ITEM with given ID."
+  }
+}

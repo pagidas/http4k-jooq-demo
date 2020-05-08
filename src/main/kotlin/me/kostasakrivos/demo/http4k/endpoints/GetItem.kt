@@ -6,6 +6,9 @@ import me.kostasakrivos.demo.http4k.ItemJson.auto
 import me.kostasakrivos.demo.http4k.ItemName
 import me.kostasakrivos.demo.http4k.asA
 import me.kostasakrivos.demo.http4k.common.Endpoint
+import me.kostasakrivos.demo.http4k.common.Error
+import me.kostasakrivos.demo.http4k.common.ErrorResponse
+import me.kostasakrivos.demo.http4k.common.withErrorResponse
 import me.kostasakrivos.demo.http4k.security.Security
 import me.kostasakrivos.demo.http4k.service.ItemService
 import org.http4k.contract.div
@@ -15,6 +18,7 @@ import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
 import org.http4k.core.Request
 import org.http4k.core.Response
+import org.http4k.core.Status.Companion.NOT_FOUND
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
 import org.http4k.lens.Path
@@ -26,6 +30,7 @@ class GetItem(private val items: ItemService): Endpoint {
     private val itemLens = Body.auto<Item>().toLens()
 
     private val exampleGetItemResponse = Item(1.asA(::ItemId), "maybe a keyboard?".asA(::ItemName))
+    private val exampleGetItemErrorResponse = ErrorResponse(Error("Not Found", "Item not found"))
 
     override val spec =
         "/items" / Path.itemId meta {
@@ -33,6 +38,7 @@ class GetItem(private val items: ItemService): Endpoint {
             security = Security.basicAuth
             queries += Path.itemId
             returning(OK, itemLens to exampleGetItemResponse)
+            returning(NOT_FOUND, ErrorResponse.lens to exampleGetItemErrorResponse)
         }
 
     override val contractRoute = spec bindContract GET to { itemId ->  handler(itemId) }
@@ -40,7 +46,6 @@ class GetItem(private val items: ItemService): Endpoint {
     private fun handler(givenId: ItemId): HttpHandler = { _: Request ->
         items.getItem(givenId)?.let {
             Response(OK).with(itemLens of it)
-        } ?:
-        Response(OK).body("Couldn't find ITEM with given ID.")
+        } ?: Response(NOT_FOUND).withErrorResponse("Item not found")
     }
 }

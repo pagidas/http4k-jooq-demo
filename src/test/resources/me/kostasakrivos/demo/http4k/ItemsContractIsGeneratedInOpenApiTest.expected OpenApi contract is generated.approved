@@ -1,0 +1,447 @@
+{
+  "info": {
+    "title": "Items API",
+    "version": "v1.0",
+    "description": null
+  },
+  "tags": [
+  ],
+  "paths": {
+    "/api/items": {
+      "get": {
+        "summary": "Returns all items.",
+        "description": null,
+        "tags": [
+          "/api"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "maybe a keyboard?"
+                  },
+                  {
+                    "id": 2,
+                    "name": "maybe a mouse?"
+                  },
+                  {
+                    "id": 5,
+                    "name": "maybe a monitor?"
+                  }
+                ],
+                "schema": {
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/Item"
+                      }
+                    ]
+                  },
+                  "example": [
+                    {
+                      "id": 1,
+                      "name": "maybe a keyboard?"
+                    },
+                    {
+                      "id": 2,
+                      "name": "maybe a mouse?"
+                    },
+                    {
+                      "id": 5,
+                      "name": "maybe a monitor?"
+                    }
+                  ],
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": [
+            ]
+          }
+        ],
+        "operationId": "getApiItems",
+        "deprecated": false
+      },
+      "post": {
+        "summary": "Creates a new item.",
+        "description": null,
+        "tags": [
+          "/api"
+        ],
+        "parameters": [
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "name": "the-item-name"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/NewItemRequest",
+                "example": null
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 5,
+                  "name": "newly-created-item"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Item",
+                  "example": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": [
+            ]
+          }
+        ],
+        "operationId": "postApiItems",
+        "deprecated": false
+      },
+      "put": {
+        "summary": "Updates an item.",
+        "description": null,
+        "tags": [
+          "/api"
+        ],
+        "parameters": [
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "id": 5,
+                "name": "an-item"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Item",
+                "example": null
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 5,
+                  "name": "the-updated-item-name"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Item",
+                  "example": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "Not found",
+                    "message": "Couldn't find ITEM with given ID."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse",
+                  "example": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "Not found",
+                    "message": "Given ID is missing."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse",
+                  "example": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": [
+            ]
+          }
+        ],
+        "operationId": "putApiItems",
+        "deprecated": false
+      }
+    },
+    "/api/items/{itemId}": {
+      "delete": {
+        "summary": "Removes that item given the id.",
+        "description": null,
+        "tags": [
+          "/api"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "path",
+            "name": "itemId",
+            "required": true,
+            "description": "The ID of the Item."
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "path",
+            "name": "itemId",
+            "required": true,
+            "description": "The ID of the Item."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Item with given ID: 5 has been deleted."
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveItemResponse",
+                  "example": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "Not found",
+                    "message": "Couldn't find ITEM with given ID."
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse",
+                  "example": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": [
+            ]
+          }
+        ],
+        "operationId": "deleteApiItems_itemId",
+        "deprecated": false
+      },
+      "get": {
+        "summary": "Returns that item given the id.",
+        "description": null,
+        "tags": [
+          "/api"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "path",
+            "name": "itemId",
+            "required": true,
+            "description": "The ID of the Item."
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "path",
+            "name": "itemId",
+            "required": true,
+            "description": "The ID of the Item."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "maybe a keyboard?"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Item",
+                  "example": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "Not Found",
+                    "message": "Item not found"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse",
+                  "example": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": [
+            ]
+          }
+        ],
+        "operationId": "getApiItems_itemId",
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Item": {
+        "properties": {
+          "id": {
+            "example": 5,
+            "type": "number"
+          },
+          "name": {
+            "example": "an-item",
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 5,
+          "name": "an-item"
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ]
+      },
+      "NewItemRequest": {
+        "properties": {
+          "name": {
+            "example": "the-item-name",
+            "type": "string"
+          }
+        },
+        "example": {
+          "name": "the-item-name"
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ]
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/Error",
+            "example": null
+          }
+        },
+        "example": {
+          "error": {
+            "code": "Not found",
+            "message": "Couldn't find ITEM with given ID."
+          }
+        },
+        "type": "object",
+        "required": [
+          "error"
+        ]
+      },
+      "Error": {
+        "properties": {
+          "code": {
+            "example": "Not found",
+            "type": "string"
+          },
+          "message": {
+            "example": "Couldn't find ITEM with given ID.",
+            "type": "string"
+          }
+        },
+        "example": {
+          "code": "Not found",
+          "message": "Couldn't find ITEM with given ID."
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ]
+      },
+      "RemoveItemResponse": {
+        "properties": {
+          "message": {
+            "example": "Item with given ID: 5 has been deleted.",
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Item with given ID: 5 has been deleted."
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "scheme": "basic",
+        "type": "http"
+      }
+    }
+  },
+  "openapi": "3.0.0"
+}

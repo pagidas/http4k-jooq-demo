@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "Bad Request",
+    "message": "Given ID is missing."
+  }
+}

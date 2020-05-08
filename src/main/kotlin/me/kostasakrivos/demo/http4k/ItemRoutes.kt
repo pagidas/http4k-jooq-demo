@@ -29,12 +29,12 @@ object ItemRoutes {
 
         val contract = contract {
             renderer = OpenApi3(ApiInfo("Items API", "v1.0"), ItemJson)
-            descriptionPath = "/swagger.json"
+            descriptionPath = "/"
             routes += contractRoutes.map { it.contractRoute }
         }
 
         return ServerFilters.CatchLensFailure
             .then(DebuggingFilters.PrintRequestAndResponse())
-            .then(routes("/api/v1" bind contract))
+            .then(routes("/api" bind contract))
     }
 }

@@ -42,6 +42,8 @@ dependencies {
     jooqRuntime database
 
     testCompile jupiter
+    testCompile approvalTesting
+    testCompile mockk
     testRuntimeOnly jupiterEngine
 }
 
