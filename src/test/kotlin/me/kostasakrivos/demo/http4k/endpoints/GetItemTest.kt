@@ -21,18 +21,12 @@ class GetItemTest: ItemsRoutesTestCase() {
     @Test
     fun `can respond 200 with item given id in path variable`(approver: Approver) {
         every { itemsService.getItem(getItem.id!!) } returns getItem
-        approver.assertApproved(
-            testApp(getItemRequest(getItem.id!!)),
-            OK
-        )
+        approver.assertApproved(testApp(getItemRequest(getItem.id!!)), OK)
     }
 
     @Test
     fun `can respond 404 when item is not found given id in parth variable`(approver: Approver) {
         every { itemsService.getItem(notFoundItemId) } returns null
-        approver.assertApproved(
-            testApp(getItemRequest(notFoundItemId)),
-            NOT_FOUND
-        )
+        approver.assertApproved(testApp(getItemRequest(notFoundItemId)), NOT_FOUND)
     }
 }

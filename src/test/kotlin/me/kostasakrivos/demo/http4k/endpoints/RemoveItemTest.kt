@@ -22,18 +22,12 @@ class RemoveItemTest: ItemsRoutesTestCase() {
     @Test
     fun `can respond 200 with success message when item has been successfully removed`(approver: Approver) {
         every { itemsService.removeItem(removeItemId) } returns true
-        approver.assertApproved(
-            testApp(removeItemRequest(removeItemId)),
-            OK
-        )
+        approver.assertApproved(testApp(removeItemRequest(removeItemId)), OK)
     }
 
     @Test
     fun `can respond 404 with error message when item with given id has not been found`(approver: Approver) {
         every { itemsService.removeItem(notFoundItemId) } returns false
-        approver.assertApproved(
-            testApp(removeItemRequest(notFoundItemId)),
-            NOT_FOUND
-        )
+        approver.assertApproved(testApp(removeItemRequest(notFoundItemId)), NOT_FOUND)
     }
 }
