@@ -14,6 +14,7 @@ This demo app provides a CRUD api microservice targetting a resource `Item`
 `GET /api/items/{id}` gets one item by given id in path variable.
 
 `POST /api/items` creates a new item and stores into the database.
+
 e.g.
 ```jshelllanguage
 {
@@ -29,6 +30,7 @@ and response
 ```
 
 `PUT /api/items` updates an existing item in the database, providing that same id with the new name.
+
 e.g.
 ```jshelllanguage
 {
@@ -45,7 +47,8 @@ and response
 ```
 
 `DELETE /api/items/{id}` removes an existing item from the database given an id in the path variable.
-example response.
+
+example response:
 ```jshelllanguage
 {
   "message": "Item with given ID: ItemId(value=5) has been deleted."
@@ -54,7 +57,7 @@ example response.
 
 #### Testing
 
-Right now, this demo only provides [approval](https://www.http4k.org/guide/modules/approvaltests/) testing for contract
+Right now, this demo only provides [approval](https://www.http4k.org/guide/modules/approvaltests/) testing for contract.
 - Api generated in `OpenApi`.
 - Each contract of all endpoints.
 
