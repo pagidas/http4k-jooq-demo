@@ -59,6 +59,14 @@ import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
 import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
 
+Properties properties = new Properties()
+def propsFile = project.rootProject.file(".env")
+if (propsFile.exists()) {
+    properties.load(propsFile.newDataInputStream())
+}
+def dbPassword = properties.getProperty('DB_PASSWORD')
+def dbName = properties.getProperty('DB_NAME')
+
 task buildAppImage(type: DockerBuildImage) {
     description('Builds the app image based on the local Dockerfile.')
     files "$buildDir/libs/${project.name}-${project.version}-all.jar"
@@ -74,8 +82,8 @@ task createLocalMysqlContainer(type: DockerCreateContainer) {
     dependsOn pullMysql
     targetImageId pullMysql.image
     containerName = 'items_db'
-    withEnvVar("MYSQL_ROOT_PASSWORD", '${DB_PASSWORD}')
-    withEnvVar("MYSQL_DATABASE", '${DB_NAME}')
+    withEnvVar('MYSQL_ROOT_PASSWORD', dbPassword)
+    withEnvVar('MYSQL_DATABASE', dbName)
 }
 
 task localMysql(type: DockerStartContainer) {
