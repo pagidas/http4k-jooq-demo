@@ -54,22 +54,34 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "11"
 }
 
-//import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
+import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
 
-//task createDockerfile(type: Dockerfile) {
-//    description('Creates the Dockerfile for the app.')
-//    from('openjdk:14-alpine')
-//    arg("JAR_FILE")
-//    copyFile('${JAR_FILE}', 'app.jar')
-//    entryPoint('java', '-jar', 'app.jar')
-//}
-
-task buildImage(type: DockerBuildImage) {
-    description('Builds the image based on the local Dockerfile.')
+task buildAppImage(type: DockerBuildImage) {
+    description('Builds the app image based on the local Dockerfile.')
     files "$buildDir/libs/${project.name}-${project.version}-all.jar"
     buildArgs = [JAR_FILE: "${project.name}-${project.version}-all.jar"]
     images.add("${project.name}:${project.version}")
+}
+
+task pullMysql(type: DockerPullImage) {
+    image = 'mysql:8.0.18'
+}
+
+task createLocalMysqlContainer(type: DockerCreateContainer) {
+    dependsOn pullMysql
+    targetImageId pullMysql.image
+    containerName = 'items_db'
+    withEnvVar("MYSQL_ROOT_PASSWORD", '${DB_PASSWORD}')
+    withEnvVar("MYSQL_DATABASE", '${DB_NAME}')
+}
+
+task localMysql(type: DockerStartContainer) {
+    description('Runs a local mysql container for testing gihub PR on jenkins.')
+    dependsOn createLocalMysqlContainer
+    targetContainerId createLocalMysqlContainer.containerId
 }
 
 flyway {
