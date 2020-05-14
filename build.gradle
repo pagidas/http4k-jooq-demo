@@ -74,6 +74,9 @@ task createLocalMysqlContainer(type: DockerCreateContainer) {
     dependsOn pullMysql
     targetImageId pullMysql.image
     containerName = 'items_db'
+    hostConfig.portBindings = ['3306:3306']
+    hostConfig.autoRemove = true
+    hostConfig.binds = ["http4k_jooq_demo_data":"/var/lib/mysql"]
     withEnvVar('MYSQL_ROOT_PASSWORD', "pwd")
     withEnvVar('MYSQL_DATABASE', "items_app")
 }
@@ -86,7 +89,7 @@ task localMysql(type: DockerStartContainer) {
 
 flyway {
     driver = 'com.mysql.cj.jdbc.Driver'
-    url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: "items_db"}:3306"
+    url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: "localhost"}:3306/${System.env.DB_NAME ?: "items_app"}"
     user = System.env.DB_USERNAME ?: 'root'
     password = System.env.DB_PASSWORD ?: 'pwd'
 }
@@ -105,7 +108,7 @@ def jooqConfig() {
         logging = 'DEBUG'
         jdbc {
             driver = 'com.mysql.cj.jdbc.Driver'
-            url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: "items_db"}:3306"
+            url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: "localhost"}:3306"
             user = System.env.DB_USERNAME ?: 'root'
             password = System.env.DB_PASSWORD ?: 'pwd'
             schema = 'items_app'
