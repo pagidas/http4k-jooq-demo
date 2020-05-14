@@ -5,7 +5,7 @@ plugins {
     id 'java-library'
     id "org.flywaydb.flyway" version "6.3.2"
     id 'com.github.johnrengelman.shadow' version '5.2.0'
-    id 'com.palantir.docker' version '0.22.2'
+    id 'com.bmuschko.docker-remote-api' version '6.4.0'
 }
 
 apply from: rootProject.file("versions.gradle")
@@ -47,17 +47,29 @@ dependencies {
     testRuntimeOnly jupiterEngine
 }
 
-docker {
-    name "${project.name}:${project.version}"
-    files "$buildDir/libs/${project.name}-${project.version}-all.jar"
-    buildArgs([JAR_FILE: "${project.name}-${project.version}-all.jar"])
-}
-
 compileKotlin {
     kotlinOptions.jvmTarget = "11"
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "11"
+}
+
+//import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
+//task createDockerfile(type: Dockerfile) {
+//    description('Creates the Dockerfile for the app.')
+//    from('openjdk:14-alpine')
+//    arg("JAR_FILE")
+//    copyFile('${JAR_FILE}', 'app.jar')
+//    entryPoint('java', '-jar', 'app.jar')
+//}
+
+task buildImage(type: DockerBuildImage) {
+    description('Builds the image based on the local Dockerfile.')
+    files "$buildDir/libs/${project.name}-${project.version}-all.jar"
+    buildArgs = [JAR_FILE: "${project.name}-${project.version}-all.jar"]
+    images.add("${project.name}:${project.version}")
 }
 
 flyway {

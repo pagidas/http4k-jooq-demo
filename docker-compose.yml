@@ -19,4 +19,4 @@ services:
     container_name: items_app
     restart: always
     ports:
-      - 8080:8080
+      - 8000:8000
