@@ -59,14 +59,6 @@ import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
 import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
 
-Properties properties = new Properties()
-def propsFile = project.rootProject.file(".env")
-if (propsFile.exists()) {
-    properties.load(propsFile.newDataInputStream())
-}
-def dbPassword = properties.getProperty('DB_PASSWORD')
-def dbName = properties.getProperty('DB_NAME')
-
 task buildAppImage(type: DockerBuildImage) {
     description('Builds the app image based on the local Dockerfile.')
     files "$buildDir/libs/${project.name}-${project.version}-all.jar"
@@ -82,8 +74,8 @@ task createLocalMysqlContainer(type: DockerCreateContainer) {
     dependsOn pullMysql
     targetImageId pullMysql.image
     containerName = 'items_db'
-    withEnvVar('MYSQL_ROOT_PASSWORD', dbPassword)
-    withEnvVar('MYSQL_DATABASE', dbName)
+    withEnvVar('MYSQL_ROOT_PASSWORD', "pwd")
+    withEnvVar('MYSQL_DATABASE', "items_app")
 }
 
 task localMysql(type: DockerStartContainer) {
@@ -94,9 +86,9 @@ task localMysql(type: DockerStartContainer) {
 
 flyway {
     driver = 'com.mysql.cj.jdbc.Driver'
-    url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: "localhost"}:3306"
-    user = System.env.DB_USERNAME ?: "root"
-    password = System.env.DB_PASSWORD ?: ""
+    url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: "items_db"}:3306"
+    user = System.env.DB_USERNAME ?: 'root'
+    password = System.env.DB_PASSWORD ?: 'pwd'
 }
 
 jooq {
@@ -113,9 +105,9 @@ def jooqConfig() {
         logging = 'DEBUG'
         jdbc {
             driver = 'com.mysql.cj.jdbc.Driver'
-            url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: "localhost"}:3306"
-            user = System.env.DB_USERNAME ?: "root"
-            password = System.env.DB_PASSWORD ?: ""
+            url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: "items_db"}:3306"
+            user = System.env.DB_USERNAME ?: 'root'
+            password = System.env.DB_PASSWORD ?: 'pwd'
             schema = 'items_app'
         }
         generator {
