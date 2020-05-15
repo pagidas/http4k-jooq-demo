@@ -58,6 +58,7 @@ import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
 import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStopContainer
 
 task buildAppImage(type: DockerBuildImage) {
     description('Builds the app image based on the local Dockerfile.')
@@ -85,6 +86,10 @@ task localMysql(type: DockerStartContainer) {
     description('Runs a local mysql container for testing gihub PR on jenkins.')
     dependsOn createLocalMysqlContainer
     targetContainerId createLocalMysqlContainer.containerId
+}
+
+task stopLocalMysql(type: DockerStopContainer) {
+    targetContainerId "items_db"
 }
 
 flyway {
