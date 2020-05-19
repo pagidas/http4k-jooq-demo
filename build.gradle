@@ -109,6 +109,15 @@ shadowJar {
     mergeServiceFiles()
 }
 
+task testApp {
+    clean
+    localMysql
+    generateItemsAppJooqSchemaSource
+    flywayMigrate
+    build
+    stopLocalMysql
+}
+
 def jooqConfig() {
     return {
         logging = 'DEBUG'
