@@ -71,7 +71,7 @@ To get you up and running, simply put in terminal:
 
 `./gradlew generateItemsAppJooqSchemaSource shadowJar docker`
 
-And then, at the root of the project, `docker-compose up` 
+And then, at the root of the project, `docker-compose up`. 
 
 which will pull whatever is needed to orchestrate it (both db, and app)
 

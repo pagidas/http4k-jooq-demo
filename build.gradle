@@ -68,10 +68,12 @@ task buildAppImage(type: DockerBuildImage) {
 }
 
 task pullMysql(type: DockerPullImage) {
+    group = 'Custom test'
     image = 'mysql:8.0.18'
 }
 
 task createLocalMysqlContainer(type: DockerCreateContainer) {
+    group = 'Custom test'
     dependsOn pullMysql
     targetImageId pullMysql.image
     containerName = 'items_db'
@@ -83,19 +85,20 @@ task createLocalMysqlContainer(type: DockerCreateContainer) {
 }
 
 task localMysql(type: DockerStartContainer) {
+    group = 'Custom test'
     description('Runs a local mysql container plus flyway migrations for testing gihub PR on jenkins.')
     dependsOn createLocalMysqlContainer
     targetContainerId createLocalMysqlContainer.containerId
-    flywayMigrate
 }
 
 task stopLocalMysql(type: DockerStopContainer) {
+    group = 'Custom test'
     targetContainerId "items_db"
 }
 
 flyway {
     driver = 'com.mysql.cj.jdbc.Driver'
-    url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: "localhost"}:3306/${System.env.DB_NAME ?: "items_app"}"
+    url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: System.properties['DB_HOST'] ?: "localhost"}:3306/${System.env.DB_NAME ?: "items_app"}"
     user = System.env.DB_USERNAME ?: 'root'
     password = System.env.DB_PASSWORD ?: 'pwd'
 }
@@ -109,21 +112,12 @@ shadowJar {
     mergeServiceFiles()
 }
 
-task testApp {
-    clean
-    localMysql
-    generateItemsAppJooqSchemaSource
-    flywayMigrate
-    build
-    stopLocalMysql
-}
-
 def jooqConfig() {
     return {
         logging = 'DEBUG'
         jdbc {
             driver = 'com.mysql.cj.jdbc.Driver'
-            url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: "localhost"}:3306"
+            url = System.env.DB_URL ?: "jdbc:mysql://${System.env.DB_HOST ?: System.properties['DB_HOST'] ?: "localhost"}:3306"
             user = System.env.DB_USERNAME ?: 'root'
             password = System.env.DB_PASSWORD ?: 'pwd'
             schema = 'items_app'
