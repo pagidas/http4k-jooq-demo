@@ -87,7 +87,6 @@ task localMysql(type: DockerStartContainer) {
     description('Runs a local mysql container plus flyway migrations for testing gihub PR on jenkins.')
     dependsOn createLocalMysqlContainer
     targetContainerId createLocalMysqlContainer.containerId
-    flywayMigrate
 }
 
 task stopLocalMysql(type: DockerStopContainer) {
