@@ -57,7 +57,7 @@ example response:
 
 #### Testing
 
-Right now, this demo only provides [approval](https://www.http4k.org/guide/modules/approvaltests/) testing for contract.
+Right now, this demo only provides [approval](https://www.http4k.org/guide/modules/approvaltests/) testing for contract:
 - Api generated in `OpenApi`
 - Each contract of all endpoints
 
