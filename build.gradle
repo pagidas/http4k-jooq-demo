@@ -78,6 +78,7 @@ task createLocalMysqlContainer(type: DockerCreateContainer) {
     hostConfig.portBindings = ['3306:3306']
     hostConfig.autoRemove = true
     hostConfig.binds = ["http4k_jooq_demo_data":"/var/lib/mysql"]
+    hostConfig.network = 'jenkins-socat-docker-socket_default'
     withEnvVar('MYSQL_ROOT_PASSWORD', "pwd")
     withEnvVar('MYSQL_DATABASE', "items_app")
 }
@@ -107,15 +108,6 @@ jooq {
 
 shadowJar {
     mergeServiceFiles()
-}
-
-task testApp {
-    clean
-    localMysql
-    generateItemsAppJooqSchemaSource
-    flywayMigrate
-    build
-    stopLocalMysql
 }
 
 def jooqConfig() {
