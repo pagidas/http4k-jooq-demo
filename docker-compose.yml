@@ -8,6 +8,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - "http4k_jooq_demo_data:/var/lib/mysql"
   crud-service:
     depends_on:
       - db
@@ -20,3 +22,7 @@ services:
     restart: always
     ports:
       - 8000:8000
+volumes:
+  http4k_jooq_demo_data:
+    driver: local
+
