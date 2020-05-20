@@ -79,7 +79,8 @@ task createLocalMysqlContainer(type: DockerCreateContainer) {
     containerName = 'items_db'
     hostConfig.portBindings = ['3306:3306']
     hostConfig.autoRemove = true
-    hostConfig.binds = ["http4k_jooq_demo_data":"/var/lib/mysql"]
+    hostConfig.network = 'jenkins-socat-docker-socket_default'
+    cmd = ['--default-authentication-plugin=mysql_native_password']
     withEnvVar('MYSQL_ROOT_PASSWORD', "pwd")
     withEnvVar('MYSQL_DATABASE', "items_app")
 }
