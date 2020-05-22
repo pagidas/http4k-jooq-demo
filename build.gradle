@@ -55,7 +55,7 @@ compileTestKotlin {
 }
 
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
 import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
 import com.bmuschko.gradle.docker.tasks.container.DockerStopContainer
@@ -67,15 +67,24 @@ task buildAppImage(type: DockerBuildImage) {
     images.add("${project.name}:${project.version}")
 }
 
-task pullMysql(type: DockerPullImage) {
+task createLocalMysqlDockerfile(type: Dockerfile) {
     group = 'Custom test'
-    image = 'mysql:8.0.18'
+    from('mysql:8.0.18')
+    instruction(
+        'HEALTHCHECK CMD mysql -e "select 1" -uroot -p$MYSQL_ROOT_PASSWORD'
+    )
+}
+
+task buildLocaMysqlImage(type: DockerBuildImage) {
+    group = 'Custom test'
+    dependsOn createLocalMysqlDockerfile
+    images.add('local-test-mysql')
 }
 
 task createLocalMysqlContainer(type: DockerCreateContainer) {
     group = 'Custom test'
-    dependsOn pullMysql
-    targetImageId pullMysql.image
+    dependsOn buildLocaMysqlImage
+    targetImageId buildLocaMysqlImage.imageId
     containerName = 'items_db'
     hostConfig.portBindings = ['3306:3306']
     hostConfig.autoRemove = true
