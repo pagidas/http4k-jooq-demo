@@ -38,6 +38,7 @@ dependencies {
     compile hikari
     compile slf4jLogging
     compile flyway
+    compile swaggerUi
 
     jooqRuntime database
 
