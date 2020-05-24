@@ -20,8 +20,14 @@ import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.bind
 import org.http4k.routing.routes
 import org.http4k.routing.static
+import java.util.Properties
 
-private val swaggerUiVersion = "3.25.3"
+private val swaggerUiVersion = with(Properties()) {
+    ItemRoutes.javaClass.getResourceAsStream(
+        "/META-INF/maven/org.webjars/swagger-ui/pom.properties"
+    ).use { load(it) }
+    getProperty("version")
+}
 
 object ItemRoutes {
     operator fun invoke(itemService: ItemService): RoutingHttpHandler {
