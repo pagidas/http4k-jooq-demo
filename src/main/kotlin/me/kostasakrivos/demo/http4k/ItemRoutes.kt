@@ -49,7 +49,7 @@ object ItemRoutes {
 }
 
 private val swaggerUi: RoutingHttpHandler = routes(
-    "docs" bind GET to {
+    "/docs" bind GET to {
         Response(FOUND).header("Location", "/api/docs/index.html?url=/api")
     },
     "/docs" bind static(Classpath("META-INF/resources/webjars/swagger-ui/$swaggerUiVersion"))
